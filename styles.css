@@ -18,7 +18,7 @@ header {
     max-width: 1200px; /* Ограничиваем максимальную ширину */
     margin: 0 auto; /* Центрируем контент */
     padding: 20px; /* Отступы по бокам */
-    background-image: url('images/images.jpg'); /* Фон для этой страницы */
+    background-image: url('images/images.png'); /* Фон для этой страницы */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -68,6 +68,7 @@ header {
         width: 90%; /* Полная ширина на мобильных */
     }
 }
+
 
 
 
