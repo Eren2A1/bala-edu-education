@@ -2,7 +2,7 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('images/background.jpg'); /* Путь к твоему изображению */
+    background-image: url('images/background.png'); /* Путь к твоему изображению */
     background-repeat: no-repeat; /* Чтобы изображение не повторялось */
     background-size: cover; /* Растягивает изображение на весь экран */
     background-position: center; /* Центрирует изображение */
@@ -126,3 +126,4 @@ footer {
     }
 
 }
+
