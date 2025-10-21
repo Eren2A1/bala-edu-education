@@ -1,5 +1,8 @@
 // Импорт глобальных объектов из firebase-init.js
 import { db, auth } from './firebase-init.js';
+import { signInAnonymously } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js';
+import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
+import { serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js'; // Добавлен импорт
 
 let currentLang = 'kk';
 let isAuthenticated = false; // Флаг авторизации
@@ -28,8 +31,8 @@ const resources = [
         age: '3-5',
         title: {kk: 'Эмоцияларды тану', en: 'Recognizing Emotions'},
         desc: {kk: 'Балаларға эмоцияларды ажыратуға көмектесетін карточкалар.', en: 'Cards to help children distinguish emotions.'},
-        img: 'images/12.png',
-        file: 'resources/emotion.pdf',
+        img: '/Bala-Edu/images/12.png',
+        file: '/Bala-Edu/resources/emotion.pdf',
         downloads: 0
     },
     {
@@ -38,8 +41,8 @@ const resources = [
         age: '3-5',
         title: {kk: 'Түстерді үйренеміз', en: 'Learning Colors'},
         desc: {kk: 'Негізгі түстерді тануға арналган тапсырмалар.', en: 'Tasks to recognize basic colors.'},
-        img: 'images/8.png',
-        file: 'resources/Colours.pdf',
+        img: '/Bala-Edu/images/8.png',
+        file: '/Bala-Edu/resources/Colours.pdf',
         downloads: 0
     },
     {
@@ -48,8 +51,8 @@ const resources = [
         age: '3-5',
         title: {kk: 'Жеміс-жидектер', en: 'Fruit'},
         desc: {kk: 'Балаларға жемістерді тануға көмектесетін карточкалар.', en: 'Cards to help children recognize fruits.'},
-        img: 'images/6.png',
-        file: 'resources/Fruits.pdf',
+        img: '/Bala-Edu/images/6.png',
+        file: '/Bala-Edu/resources/Fruits.pdf',
         downloads: 0
     },
     {
@@ -58,8 +61,8 @@ const resources = [
         age: '3-5',
         title: {kk: 'үй жануарлары pdf', en: 'Home Animals'},
         desc: {kk: 'Үй жануарларын тануға арналған карточкалар.', en: 'Cards to help recognize home animals.'},
-        img: 'images/3.png',
-        file: 'resources/Home_animal.pdf',
+        img: '/Bala-Edu/images/3.png',
+        file: '/Bala-Edu/resources/Home_animal.pdf',
         downloads: 0
     },
     {
@@ -68,8 +71,8 @@ const resources = [
         age: '3-5',
         title: {kk: 'көкөністер', en: 'Vegetables'},
         desc: {kk: 'Көкөністерді тануға арналған карточкалар.', en: 'Cards to help recognize vegetables.'},
-        img: 'images/4.png',
-        file: 'resources/Vegetables.pdf',
+        img: '/Bala-Edu/images/4.png',
+        file: '/Bala-Edu/resources/Vegetables.pdf',
         downloads: 0
     },
     {
@@ -78,8 +81,8 @@ const resources = [
         age: '3-5',
         title: {kk: 'Alipi', en: 'Alipi'},
         desc: {kk: 'Алифбаға арналған карточкалар.', en: 'Cards for learning the alphabet.'},
-        img: 'images/7.png',
-        file: 'resources/Alipi.pdf',
+        img: '/Bala-Edu/images/7.png',
+        file: '/Bala-Edu/resources/Alipi.pdf',
         downloads: 0
     },
     {
@@ -88,8 +91,8 @@ const resources = [
         age: '3-5',
         title: {kk: 'Сандар', en: 'Numbers'},
         desc: {kk: 'Сандарды тануға арналған карточкалар.', en: 'Cards for learning numbers.'},
-        img: 'images/10.png',
-        file: 'resources/sandar.pdf',
+        img: '/Bala-Edu/images/10.png',
+        file: '/Bala-Edu/resources/sandar.pdf',
         downloads: 0
     }
 ];
@@ -109,7 +112,7 @@ function toggleMenu() {
 }
 
 // Добавляем обработчики событий
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     setLanguage('kk');
     filterResources();
 
@@ -126,21 +129,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Глобальный слушатель состояния авторизации
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            isAuthenticated = true;
-            console.log("User authenticated:", user.uid);
-        } else {
-            console.log("Waiting for authentication...");
-            auth.signInAnonymously()
-                .then((userCredential) => {
+    // Инициализация авторизации с ожиданием
+    console.log("Starting authentication check...");
+    try {
+        await new Promise((resolve) => {
+            auth.onAuthStateChanged(user => {
+                if (user) {
                     isAuthenticated = true;
-                    console.log("Authentication succeeded:", userCredential.user.uid);
-                })
-                .catch(error => console.error("Authentication failed:", error.code, error.message));
-        }
-    });
+                    console.log("User authenticated:", user.uid);
+                    resolve();
+                } else {
+                    console.log("Attempting to authenticate...");
+                    signInAnonymously(auth)
+                        .then((userCredential) => {
+                            isAuthenticated = true;
+                            console.log("Authentication succeeded:", userCredential.user.uid);
+                            resolve();
+                        })
+                        .catch(error => console.error("Authentication failed:", error.code, error.message));
+                }
+            });
+        });
+    } catch (error) {
+        console.error("Authentication error:", error);
+    }
 });
 
 function filterResources() {
@@ -172,7 +184,7 @@ function downloadResource(id, file) {
         resource.downloads++; // Увеличиваем счётчик
         document.getElementById(`downloads-${id}`).innerText = resource.downloads; // Обновляем отображение
         // Открываем PDF в новой вкладке
-        window.open(file, '_blank');
+        window.open(file, '_blank', 'noopener,noreferrer');
         if (isAuthenticated) {
             logDownload(id); // Записываем в Firestore
         } else {
@@ -187,10 +199,10 @@ function logDownload(resourceId) {
         console.log("User state:", user);
         if (user) {
             console.log("User found, logging download...");
-            db.collection("downloads").add({
+            addDoc(collection(db, "downloads"), {
                 userId: user.uid,
                 resourceId: resourceId,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                timestamp: serverTimestamp() // Исправлено на serverTimestamp
             }).then(() => console.log("Download logged")).catch(error => console.error("Firestore error:", error));
         } else {
             console.log("No user authenticated, please wait...");
