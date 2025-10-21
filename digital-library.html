@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital кітапхана - Bala Edu Project</title>
+    <title>[Название страницы] - Bala Edu Project</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <script type="module" src="firebase-init.js"></script>
-    <script type="module" src="script.js" defer></script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3V8W8WQLB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E3V8W8WQLB');
+    </script>
+    <!-- Конец Google Analytics -->
 </head>
 <body>
     <header class="fade-in">
@@ -31,35 +38,14 @@
     </header>
 
     <main>
-        <section id="digital-library">
-            <h2 id="library-title">Digital кітапхана</h2>
-            <p id="library-desc">Балалардың дамуын қызықты әрі қолжетімді етеміз! Мұнда сіз жас ерекшеліктеріне сай ойындар мен карточкаларды тегін жүктей аласыз.</p>
-            <button id="view-resources">Қарау</button>
-
-            <div id="filters">
-                <select id="category-select">
-                    <option value="all">Барлығы</option>
-                    <option value="emotions">Эмоциялар әлемі 💛</option>
-                    <option value="colors">Түстер мен пішіндер 🎨</option>
-                    <option value="fruit">Жеміс-жидектер 🌿</option>
-                    <option value="Home_animal">үй жануарлары 🔢</option>
-                    <option value="Vegetables">көкөністер 🗣</option>
-                    <option value="language">Қазақ тілі 🎭</option>
-                    <option value="sandar">Сандар 🎭</option>
-                </select>
-                <select id="age-select">
-                    <option value="all">Барлық жас</option>
-                    <option value="3-5">3–5 жас</option>
-                    <option value="5-6">5–6 жас</option>
-                </select>
-            </div>
-
-            <div id="resource-list"></div>
-        </section>
+        <!-- Здесь будет уникальный контент каждой страницы -->
     </main>
 
     <footer>
         <p id="footer-text">© 2025. Bala Edu Project. Балалардың дамуы үшін</p>
     </footer>
+
+    <script type="module" src="firebase-init.js"></script>
+    <script type="module" src="script.js" defer></script>
 </body>
 </html>
