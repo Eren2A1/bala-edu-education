@@ -118,7 +118,6 @@ button, select {
 }
 
 footer {
-    background-image: url('images/background.png'); /* Фон для футера */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -160,5 +159,6 @@ footer {
         width: 100%;
     }
 }
+
 
 
