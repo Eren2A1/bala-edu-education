@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Digital кітапхана - Bala Edu Project</title>
+    <title>Digital кітапхана - Bala Edu Project</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- Google Analytics -->
@@ -38,7 +38,47 @@
     </header>
 
     <main>
-        <!-- Здесь будет уникальный контент каждой страницы -->
+        <section id="digital-library">
+            <h2 id="library-title">Digital кітапхана</h2>
+            <p id="library-desc">Балалардың дамуын қызықты әрі қолжетімді етеміз! Мұнда сіз жас ерекшеліктеріне сай ойындар мен карточкаларды тегін жүктей аласыз.</p>
+            <div id="filters">
+                <select id="category-select">
+                    <option value="all">Барлығы</option>
+                    <option value="emotions">Эмоциялар әлемі 💛</option>
+                    <option value="colors">Түстер мен пішіндер 🎨</option>
+                    <option value="fruit">Жеміс-жидектер 🌿</option>
+                    <option value="Home_animal">үй жануарлары 🔢</option>
+                    <option value="Vegetables">көкөністер 🗣</option>
+                    <option value="language">Қазақ тілі 🎭</option>
+                    <option value="sandar">Сандар 🎭</option>
+                </select>
+                <select id="age-select">
+                    <option value="all">Барлық жас</option>
+                    <option value="3-5">3–5 жас</option>
+                    <option value="5-6">5–6 жас</option>
+                </select>
+            </div>
+
+            <div id="resource-list">
+                <div class="card">
+                    <h3>emotions1</h3>
+                    <img src="images/emotions1.jpg" alt="emotions1" style="max-width: 100%;">
+                    <p>Опис: emotions1 карточкасы балалардың эмоцияларын тануға көмектеседі.</p>
+                    <p>Жасы: 3-5</p>
+                    <button onclick="viewResource('emotions1')">Қарау</button>
+                    <p id="feedback-emotions1">Скачиваний: 0</p>
+                </div>
+                <div class="card">
+                    <h3>colors1</h3>
+                    <img src="images/colors1.jpg" alt="colors1" style="max-width: 100%;">
+                    <p>Опис: colors1 карточкасы түстерді үйренуге арналған.</p>
+                    <p>Жасы: 3-5</p>
+                    <button onclick="viewResource('colors1')">Қарау</button>
+                    <p id="feedback-colors1">Скачиваний: 0</p>
+                </div>
+                <!-- Добавь остальные карточки по аналогии -->
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -47,6 +87,22 @@
 
     <script type="module" src="firebase-init.js"></script>
     <script type="module" src="script.js" defer></script>
+    <script>
+        function viewResource(name) {
+            const feedback = document.getElementById(`feedback-${name}`);
+            let downloads = parseInt(feedback.textContent.split(': ')[1]) || 0;
+            downloads++;
+            feedback.textContent = `Скачиваний: ${downloads}`;
+            console.log(`Просмотр ресурса: ${name}, скачиваний: ${downloads}`);
+        }
+
+        function setLanguage(lang) {
+            console.log('Язык изменён на:', lang);
+        }
+
+        function toggleMenu() {
+            document.getElementById('nav-menu').classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
-
