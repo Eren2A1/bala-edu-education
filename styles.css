@@ -1,56 +1,49 @@
 /* Существующие стили остаются... */
 
+.logo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 100px; /* Укажи нужный размер */
+    height: auto;
+    z-index: 10;
+}
+
+header {
+    background: linear-gradient(to bottom, #ffeb3b, #ffc107);
+    color: #8b6f47;
+    padding: 20px;
+    border-bottom: 5px solid #d4a373;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    position: relative;
+}
+
 #digital-library {
-    max-width: 1200px; /* Ограничиваем максимальную ширину */
-    margin: 0 auto; /* Центрируем контент */
-    padding: 20px; /* Отступы по бокам */
-    background-image: url('images/images.jpg'); /* Фон для этой страницы */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-image: url('images/images.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    min-height: 100vh; /* Чтобы фон занимал всю высоту */
+    min-height: 100vh;
 }
 
-#resource-list {
-    display: flex;
-    flex-wrap: wrap; /* Карточки будут переноситься на новую строку */
-    justify-content: center; /* Центрируем карточки */
-    gap: 20px; /* Расстояние между карточками */
-}
-
-.resource-card {
-    background-color: rgba(255, 255, 255, 0.95);
-    border: 3px solid #8b6f47;
-    border-radius: 15px;
-    margin: 15px;
-    padding: 15px;
-    width: 250px;
-    display: inline-block;
-    vertical-align: top;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
-}
-
-.resource-card img {
-    max-width: 100%; /* Ограничиваем ширину картинки размером карточки */
-    height: auto; /* Сохраняем пропорции */
-    border-radius: 10px; /* Опционально, для округлых углов */
-}
-
-.resource-card:hover {
-    transform: scale(1.05);
-}
-
-/* Медиа-запросы для мобильных устройств */
+/* Медиа-запросы для мобильных */
 @media (max-width: 600px) {
+    .logo {
+        width: 80px;
+        top: 5px;
+        left: 5px;
+    }
     #digital-library {
-        padding: 10px; /* Меньше отступов на маленьких экранах */
+        padding: 10px;
     }
     #resource-list {
-        flex-direction: column; /* Карточки в столбик */
-        align-items: center; /* Центрируем по вертикали */
+        flex-direction: column;
+        align-items: center;
     }
     .resource-card {
-        width: 90%; /* Полная ширина на мобильных */
+        width: 90%;
     }
 }
