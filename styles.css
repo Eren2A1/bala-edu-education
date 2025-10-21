@@ -14,7 +14,7 @@ body {
     background-color: #f8f1e9; /* Запасной фон */
     color: #333;
     text-align: center;
-    /* Убрали background-image, чтобы фон был под header */
+    /* Убрали background-image, чтобы фон был только в main и footer */
 }
 
 header {
@@ -28,7 +28,7 @@ header {
 }
 
 main {
-    background-image: url('images/background.png'); /* Фон под header для всех страниц */
+    background-image: url('images/background.png'); /* Фон под header */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -118,7 +118,11 @@ button, select {
 }
 
 footer {
-    background-color: #f0e9e0;
+    background-image: url('images/background.png'); /* Фон для футера */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: #f0e9e0; /* Сохраняем цвет как запасной */
     padding: 10px;
     border-top: 3px solid #d4a373;
     border-radius: 10px 10px 0 0;
