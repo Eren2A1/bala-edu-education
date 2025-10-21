@@ -31,7 +31,7 @@ header {
     max-width: 1200px; /* Ограничиваем максимальную ширину */
     margin: 0 auto; /* Центрируем контент */
     padding: 20px; /* Отступы по бокам */
-    background-image: url('images/images.png'); /* Фон только для этой секции */
+    background-image: url('images/background.png'); /* Фон только для этой секции */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -152,4 +152,5 @@ footer {
         background-size: 30px 30px; /* Оставим, но без изображения */
     }
 }
+
 
