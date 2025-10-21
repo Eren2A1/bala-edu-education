@@ -6,7 +6,14 @@
     height: auto;
     z-index: 10;/* Существующие стили остаются... */
 }
-
+header {
+    background: linear-gradient(to bottom, #ffeb3b, #ffc107);
+    color: #8b6f47;
+    padding: 20px;
+    border-bottom: 5px solid #d4a373;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    position: relative;
+}
 #digital-library {
     max-width: 1200px; /* Ограничиваем максимальную ширину */
     margin: 0 auto; /* Центрируем контент */
@@ -61,6 +68,7 @@
         width: 90%; /* Полная ширина на мобильных */
     }
 }
+
 
 
 
