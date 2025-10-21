@@ -14,7 +14,7 @@ body {
     background-color: #f8f1e9; /* Запасной фон */
     color: #333;
     text-align: center;
-    /* Убрали background-image, чтобы фон был только в #digital-library */
+    /* Убрали background-image, чтобы фон был под header */
 }
 
 header {
@@ -27,11 +27,18 @@ header {
     min-height: 70px; /* Чтобы логотип не перекрывал контент */
 }
 
+main {
+    background-image: url('images/background.png'); /* Фон под header для всех страниц */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
 #digital-library {
     max-width: 1200px; /* Ограничиваем максимальную ширину */
     margin: 0 auto; /* Центрируем контент */
     padding: 20px; /* Отступы по бокам */
-    background-image: url('images/background.png'); /* Фон только для этой секции */
+    background-image: url('images/background.png'); /* Фиксированный фон для этой секции */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -148,5 +155,4 @@ footer {
     button, select {
         width: 100%;
     }
-    /* Убрали background-size из body, так как фон теперь в #digital-library */
 }
