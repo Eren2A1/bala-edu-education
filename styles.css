@@ -11,6 +11,7 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
+    background-image: url('images/background.png');
     background-color: #f8f1e9; /* Запасной фон */
     color: #333;
     text-align: center;
@@ -152,5 +153,6 @@ footer {
         background-size: 30px 30px; /* Оставим, но без изображения */
     }
 }
+
 
 
