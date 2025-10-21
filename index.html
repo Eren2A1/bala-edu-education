@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bala Edu Project</title>
+    <title>Басты бет - Bala Edu Project</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <script src="script.js" defer></script>
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3V8W8WQLB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E3V8W8WQLB');
+    </script>
+    <!-- Конец Google Analytics -->
 </head>
 <body>
     <header class="fade-in">
         <h1 id="header-title">Bala Edu Project</h1>
         <div id="burger-menu" onclick="toggleMenu()">≡</div>
         <nav id="nav-menu" class="hidden">
+            <a href="index.html">Басты бет</a>
             <a href="team.html">Біздің команда</a>
             <a href="mission.html">Миссия</a>
             <a href="play-lab.html">Play Lab сабақтары</a>
@@ -30,17 +35,21 @@
             <button onclick="setLanguage('kk')">Қазақша</button>
             <button onclick="setLanguage('en')">English</button>
         </div>
-        <p id="header-desc">39,000+ дамытушы ойындар мен тапсырмалар 2-11 жас аралығындағы балалар үшін</p>
-        <audio id="hello-audio" src="audio/hello.mp3"></audio>
     </header>
 
     <main>
-        <p>Балалардың ойын арқылы дамуы</p>
-        <!-- Здесь можно добавить общий контент главной -->
+        <section id="home">
+            <h2>Басты бет</h2>
+            <p>Біз — Bala Edu Project, команда, которая помогает детям расти и учиться через игру и творчество! Здесь вы найдёте ресурсы для развития, уроки и поддержку для родителей.</p>
+            <p>Начните с нашей <a href="digital-library.html">Digital кітапханасы</a> или узнайте больше о нас!</p>
+        </section>
     </main>
 
     <footer>
         <p id="footer-text">© 2025. Bala Edu Project. Балалардың дамуы үшін</p>
     </footer>
+
+    <script type="module" src="firebase-init.js"></script>
+    <script type="module" src="script.js" defer></script>
 </body>
 </html>
