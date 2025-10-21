@@ -2,12 +2,9 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('images/background.png'); /* Путь к твоему изображению */
-    background-repeat: no-repeat; /* Чтобы изображение не повторялось */
-    background-size: cover; /* Растягивает изображение на весь экран */
-    background-position: center; /* Центрирует изображение */
     color: #333; /* Цвет текста */
     text-align: center;
+    background-color: #f8f1e9; /* Фон для body, если изображение не загрузится */
 }
 
 header {
@@ -91,6 +88,14 @@ footer {
     box-shadow: 0 -4px 8px rgba(0,0,0,0.1);
 }
 
+main {
+    background-image: url('images/background.png'); /* Фон для main */
+    background-repeat: no-repeat; /* Чтобы изображение не повторялось */
+    background-size: cover; /* Растягивает изображение на весь экран */
+    background-position: center; /* Центрирует изображение */
+    min-height: 100vh; /* Чтобы фон занимал всю доступную высоту */
+}
+
 @keyframes fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -124,6 +129,4 @@ footer {
     body {
         background-size: 30px 30px;
     }
-
 }
-
