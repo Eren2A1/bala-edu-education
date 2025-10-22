@@ -1,211 +1,220 @@
-// Импорт глобальных объектов из firebase-init.js
-import { db, auth } from './firebase-init.js';
-import { signInAnonymously } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js';
-import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
-import { serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js'; // Добавлен импорт
+// Игры (оставляем как есть)
+const colors = ['red', 'blue', 'green', 'yellow'];
+let correctColor = colors[Math.floor(Math.random() * colors.length)];
+const animals = ['cat', 'dog', 'bird'];
+let correctAnimal = animals[Math.floor(Math.random() * animals.length)];
+const animalNames = { 'cat': 'Мысық (Кот)', 'dog': 'Ит (Собака)', 'bird': 'Құс (Птица)' };
 
-let currentLang = 'kk';
-let isAuthenticated = false; // Флаг авторизации
-
+// Объект с переводами
 const translations = {
     kk: {
-        headerTitle: 'Bala Edu Project',
-        viewResources: 'Қарау',
-        libraryTitle: 'Digital кітапхана',
-        libraryDesc: 'Балалардың дамуын қызықты әрі қолжетімді етеміз! Мұнда сіз жас ерекшеліктеріне сай ойындар мен карточкаларды тегін жүктей аласыз.',
-        footerText: '© 2025. Bala Edu Project. Балалардың дамуы үшін'
+        // Index
+        'home-title': 'Басты бет',
+        'home-desc': 'Біз — Bala Edu Project, команда, которая помогает детям расти и учиться через игру и творчество! Здесь вы найдёте ресурсы для развития, уроки и поддержку для родителей.',
+        'home-link-text': 'Digital кітапханасы',
+        // Team
+        'team-title': 'Біздің команда',
+        'team-desc': 'Мы — команда энтузиастов, которые любят помогать детям! Здесь работают учителя, дизайнеры и разработчики, чтобы сделать обучение весёлым.',
+        'team-member1': 'Айгуль — педагог с 10-летним опытом.',
+        'team-member2': 'Ерлан — дизайнер карточек и игр.',
+        'team-member3': 'Сергей — разработчик сайта.',
+        // Mission
+        'mission-title': 'Миссия',
+        'mission-desc': 'Наша миссия — сделать обучение детей доступным, интересным и полезным. Мы создаём материалы, которые помогают развивать умения, эмоции и творчество!',
+        'mission-goals': 'Цели:',
+        'mission-goal1': 'Поддержка родителей.',
+        'mission-goal2': 'Интерактивные уроки.',
+        'mission-goal3': 'Бесплатные ресурсы.',
+        // Play Lab
+        'play-lab-title': 'Play Lab сабақтары',
+        'play-lab-desc': 'Play Lab — это место, где дети учатся через игры! Развивайте навыки с помощью наших заданий.',
+        'play-lab-game1': 'Игра 1: Угадай цвет.',
+        'play-lab-game2': 'Игра 2: Угадай животное.',
+        'play-lab-materials': 'Материалы доступны в Digital кітапхана.',
+        // Digital Library
+        'digital-library-title': 'Digital кітапхана',
+        'digital-library-desc': 'Балалардың дамуын қызықты әрі қолжетімді етеміз! Мұнда сіз жас ерекшеліктеріне сай ойындар мен карточкаларды тегін жүктей аласыз.',
+        'view-resources': 'Қарау',
+        'category-select': 'Барлығы,Эмоциялар әлемі 💛,Түстер мен пішіндер 🎨,Жеміс-жидектер 🌿,үй жануарлары 🔢,көкөністер 🗣,Қазақ тілі 🎭,Сандар 🎭',
+        'age-select': 'Барлық жас,3–5 жас,5–6 жас',
+        // Speech Lab
+        'speech-lab-title': 'Speech Lab',
+        'speech-lab-desc': 'Развивайте речь ребёнка с помощью игр и упражнений! Speech Lab помогает учить слова и строить предложения.',
+        'speech-lab-exercise1': 'Упражнение 1: Назови животное.',
+        'speech-lab-exercise2': 'Упражнение 2: Расскажи сказку.',
+        'speech-lab-materials': 'Найдите материалы в Digital кітапхана.',
+        // Kinder Lab
+        'kinder-lab-title': 'Kinder Lab',
+        'kinder-lab-desc': 'Kinder Lab — это пространство для экспериментов и игр! Дети учатся через творчество и исследования.',
+        'kinder-lab-experiment1': 'Эксперимент 1: Смешивание цветов.',
+        'kinder-lab-experiment2': 'Эксперимент 2: Создание поделок.',
+        'kinder-lab-materials': 'Материалы доступны в Digital кітапхана.',
+        // Parent Guides
+        'parent-guides-title': 'Ата-аналар үшін гайдтар',
+        'parent-guides-desc': 'Здесь вы найдёте советы, как помочь ребёнку учиться и развиваться дома!',
+        'parent-guide1': 'Гайд 1: Как играть и учить цвета.',
+        'parent-guide2': 'Гайд 2: Развитие эмоций через разговоры.',
+        'parent-guide3': 'Гайд 3: Простые игры для счёта.',
+        'parent-guides-materials': 'Скачайте дополнительные материалы в Digital кітапхана.',
+        // Feedback
+        'feedback-title': 'Кері байланыс пен көмек',
+        'feedback-desc': 'Оставьте свой отзыв или задайте вопрос — мы рады вашей помощи!',
+        'name-label': 'Атыңыз (Имя):',
+        'message-label': 'Хабарлама (Сообщение):',
+        'submit-button': 'Жіберу (Отправить)',
+        'contact-text': 'Свяжитесь с нами: ',
+        'contact-email': 'support@balaedu.kz',
+        // Footer
+        'footer-text': '© 2025. Bala Edu Project. Балалардың дамуы үшін',
+        // Nav
+        'nav-home': 'Басты бет',
+        'nav-team': 'Біздің команда',
+        'nav-mission': 'Миссия',
+        'nav-play-lab': 'Play Lab сабақтары',
+        'nav-digital-library': 'Digital кітапхана',
+        'nav-parent-guides': 'Ата-аналар үшін гайдтар',
+        'nav-speech-lab': 'Speech Lab',
+        'nav-kinder-lab': 'Kinder Lab',
+        'nav-feedback': 'Кері байланыс пен көмек'
     },
     en: {
-        headerTitle: 'Bala Edu Project',
-        viewResources: 'View',
-        libraryTitle: 'Digital Library',
-        libraryDesc: 'Making children\'s development interesting and accessible! Here you can download age-appropriate games and cards for free.',
-        footerText: '© 2025. Bala Edu Project. For Children\'s Development.'
+        // Index
+        'home-title': 'Home',
+        'home-desc': 'We are Bala Edu Project, a team that helps children grow and learn through play and creativity! Here you’ll find resources, lessons, and support for parents.',
+        'home-link-text': 'Digital Library',
+        // Team
+        'team-title': 'Our Team',
+        'team-desc': 'We are a team of enthusiasts who love helping children! Our team includes teachers, designers, and developers to make learning fun.',
+        'team-member1': 'Aigul — a teacher with 10 years of experience.',
+        'team-member2': 'Erlan — a designer of cards and games.',
+        'team-member3': 'Sergey — the website developer.',
+        // Mission
+        'mission-title': 'Mission',
+        'mission-desc': 'Our mission is to make children’s learning accessible, engaging, and beneficial. We create materials that help develop skills, emotions, and creativity!',
+        'mission-goals': 'Goals:',
+        'mission-goal1': 'Support for parents.',
+        'mission-goal2': 'Interactive lessons.',
+        'mission-goal3': 'Free resources.',
+        // Play Lab
+        'play-lab-title': 'Play Lab Lessons',
+        'play-lab-desc': 'Play Lab is a place where kids learn through games! Develop skills with our activities.',
+        'play-lab-game1': 'Game 1: Guess the Color.',
+        'play-lab-game2': 'Game 2: Guess the Animal.',
+        'play-lab-materials': 'Materials are available in the Digital Library.',
+        // Digital Library
+        'digital-library-title': 'Digital Library',
+        'digital-library-desc': 'We make children’s development fun and accessible! Here you can download games and cards tailored to age groups for free.',
+        'view-resources': 'View',
+        'category-select': 'All,Emotions World 💛,Colors and Shapes 🎨,Fruits and Vegetables 🌿,Home Animals 🔢,Vegetables 🗣,Kazakh Language 🎭,Numbers 🎭',
+        'age-select': 'All Ages,3–5 Years,5–6 Years',
+        // Speech Lab
+        'speech-lab-title': 'Speech Lab',
+        'speech-lab-desc': 'Develop your child’s speech with games and exercises! Speech Lab helps learn words and build sentences.',
+        'speech-lab-exercise1': 'Exercise 1: Name the Animal.',
+        'speech-lab-exercise2': 'Exercise 2: Tell a Story.',
+        'speech-lab-materials': 'Find materials in the Digital Library.',
+        // Kinder Lab
+        'kinder-lab-title': 'Kinder Lab',
+        'kinder-lab-desc': 'Kinder Lab is a space for experiments and play! Children learn through creativity and exploration.',
+        'kinder-lab-experiment1': 'Experiment 1: Mixing Colors.',
+        'kinder-lab-experiment2': 'Experiment 2: Creating Crafts.',
+        'kinder-lab-materials': 'Materials are available in the Digital Library.',
+        // Parent Guides
+        'parent-guides-title': 'Parent Guides',
+        'parent-guides-desc': 'Here you’ll find tips on how to help your child learn and grow at home!',
+        'parent-guide1': 'Guide 1: Playing and Learning Colors.',
+        'parent-guide2': 'Guide 2: Developing Emotions Through Conversation.',
+        'parent-guide3': 'Guide 3: Simple Counting Games.',
+        'parent-guides-materials': 'Download additional materials in the Digital Library.',
+        // Feedback
+        'feedback-title': 'Feedback and Help',
+        'feedback-desc': 'Leave your feedback or ask a question — we’re happy to assist!',
+        'name-label': 'Your Name:',
+        'message-label': 'Message:',
+        'submit-button': 'Submit',
+        'contact-text': 'Contact us: ',
+        'contact-email': 'support@balaedu.kz',
+        // Footer
+        'footer-text': '© 2025. Bala Edu Project. For Children’s Development',
+        // Nav
+        'nav-home': 'Home',
+        'nav-team': 'Our Team',
+        'nav-mission': 'Mission',
+        'nav-play-lab': 'Play Lab Lessons',
+        'nav-digital-library': 'Digital Library',
+        'nav-parent-guides': 'Parent Guides',
+        'nav-speech-lab': 'Speech Lab',
+        'nav-kinder-lab': 'Kinder Lab',
+        'nav-feedback': 'Feedback and Help'
     }
 };
 
-const resources = [
-    {
-        id: 'emotions1',
-        category: 'emotions',
-        age: '3-5',
-        title: {kk: 'Эмоцияларды тану', en: 'Recognizing Emotions'},
-        desc: {kk: 'Балаларға эмоцияларды ажыратуға көмектесетін карточкалар.', en: 'Cards to help children distinguish emotions.'},
-        img: '/Bala-Edu/images/12.png',
-        file: '/Bala-Edu/resources/emotion.pdf',
-        downloads: 0
-    },
-    {
-        id: 'colors1',
-        category: 'colors',
-        age: '3-5',
-        title: {kk: 'Түстерді үйренеміз', en: 'Learning Colors'},
-        desc: {kk: 'Негізгі түстерді тануға арналган тапсырмалар.', en: 'Tasks to recognize basic colors.'},
-        img: '/Bala-Edu/images/8.png',
-        file: '/Bala-Edu/resources/Colours.pdf',
-        downloads: 0
-    },
-    {
-        id: 'fruit1',
-        category: 'fruit',
-        age: '3-5',
-        title: {kk: 'Жеміс-жидектер', en: 'Fruit'},
-        desc: {kk: 'Балаларға жемістерді тануға көмектесетін карточкалар.', en: 'Cards to help children recognize fruits.'},
-        img: '/Bala-Edu/images/6.png',
-        file: '/Bala-Edu/resources/Fruits.pdf',
-        downloads: 0
-    },
-    {
-        id: 'Home_animal1',
-        category: 'Home_animal',
-        age: '3-5',
-        title: {kk: 'үй жануарлары pdf', en: 'Home Animals'},
-        desc: {kk: 'Үй жануарларын тануға арналған карточкалар.', en: 'Cards to help recognize home animals.'},
-        img: '/Bala-Edu/images/3.png',
-        file: '/Bala-Edu/resources/Home_animal.pdf',
-        downloads: 0
-    },
-    {
-        id: 'Vegetables1',
-        category: 'Vegetables',
-        age: '3-5',
-        title: {kk: 'көкөністер', en: 'Vegetables'},
-        desc: {kk: 'Көкөністерді тануға арналған карточкалар.', en: 'Cards to help recognize vegetables.'},
-        img: '/Bala-Edu/images/4.png',
-        file: '/Bala-Edu/resources/Vegetables.pdf',
-        downloads: 0
-    },
-    {
-        id: 'language1',
-        category: 'language',
-        age: '3-5',
-        title: {kk: 'Alipi', en: 'Alipi'},
-        desc: {kk: 'Алифбаға арналған карточкалар.', en: 'Cards for learning the alphabet.'},
-        img: '/Bala-Edu/images/7.png',
-        file: '/Bala-Edu/resources/Alipi.pdf',
-        downloads: 0
-    },
-    {
-        id: 'sandar1',
-        category: 'sandar',
-        age: '3-5',
-        title: {kk: 'Сандар', en: 'Numbers'},
-        desc: {kk: 'Сандарды тануға арналған карточкалар.', en: 'Cards for learning numbers.'},
-        img: '/Bala-Edu/images/10.png',
-        file: '/Bala-Edu/resources/sandar.pdf',
-        downloads: 0
-    }
-];
-
+// Функция переключения языка
 function setLanguage(lang) {
-    currentLang = lang;
-    document.getElementById('header-title').innerText = translations[lang].headerTitle;
-    document.getElementById('view-resources').innerText = translations[lang].viewResources;
-    document.getElementById('library-title').innerText = translations[lang].libraryTitle;
-    document.getElementById('library-desc').innerText = translations[lang].libraryDesc;
-    document.getElementById('footer-text').innerText = translations[lang].footerText;
-    filterResources();
+    const elements = document.querySelectorAll('[id]');
+    elements.forEach(element => {
+        const translationKey = element.id;
+        if (translations[lang][translationKey]) {
+            if (element.tagName === 'SELECT') {
+                const options = translations[lang][translationKey].split(',');
+                element.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+            } else if (element.tagName === 'A' && element.textContent.includes('Digital кітапхана')) {
+                element.textContent = translations[lang]['home-link-text'];
+                element.href = 'digital-library.html';
+            } else {
+                element.textContent = translations[lang][translationKey];
+            }
+        }
+    });
+    // Устанавливаем lang атрибут для HTML
+    document.documentElement.lang = lang;
 }
 
+// Игровые функции (оставляем как есть)
+function setRandomColor() {
+    correctColor = colors[Math.floor(Math.random() * colors.length)];
+    document.getElementById('color-question').textContent = `Қандай түс? (What color is this?) ${correctColor}`;
+}
+
+function checkColor(selected) {
+    const feedback = document.getElementById('color-feedback');
+    if (selected === correctColor) {
+        feedback.textContent = 'Дұрыс! 🎉 Тағы да ойнайық! (Correct! 🎉 Let’s play again!)';
+        feedback.style.color = 'green';
+    } else {
+        feedback.textContent = 'Қате! Тағы тырысыңыз! (Wrong! Try again!)';
+        feedback.style.color = 'red';
+    }
+    setRandomColor();
+}
+
+function setRandomAnimal() {
+    correctAnimal = animals[Math.floor(Math.random() * animals.length)];
+    const animalNames = { 'cat': 'Мысық (Кот)', 'dog': 'Ит (Собака)', 'bird': 'Құс (Птица)' };
+    document.getElementById('animal-question').textContent = `Бұл қай жануар? (${animalNames[correctAnimal]}?)`;
+}
+
+function checkAnimal(selected) {
+    const feedback = document.getElementById('animal-feedback');
+    if (selected === correctAnimal) {
+        feedback.textContent = 'Дұрыс! 🎉 Тағы да ойнайық! (Correct! 🎉 Let’s play again!)';
+        feedback.style.color = 'green';
+    } else {
+        feedback.textContent = 'Қате! Тағы тырысыңыз! (Wrong! Try again!)';
+        feedback.style.color = 'red';
+    }
+    setRandomAnimal();
+}
+
+// Инициализация при загрузке
+window.onload = function() {
+    setRandomColor();
+    setRandomAnimal();
+    // Устанавливаем язык по умолчанию (например, казахский)
+    setLanguage('kk');
+};
+
+// Функция для переключения меню
 function toggleMenu() {
     document.getElementById('nav-menu').classList.toggle('active');
-}
-
-// Добавляем обработчики событий
-document.addEventListener('DOMContentLoaded', async () => {
-    setLanguage('kk');
-    filterResources();
-
-    document.getElementById('view-resources').addEventListener('click', filterResources);
-    document.getElementById('category-select').addEventListener('change', filterResources);
-    document.getElementById('age-select').addEventListener('change', filterResources);
-
-    // Обработчик для кнопок просмотра
-    document.getElementById('resource-list').addEventListener('click', (event) => {
-        if (event.target.tagName === 'BUTTON') {
-            const resourceId = event.target.dataset.id;
-            const file = resources.find(r => r.id === resourceId).file;
-            downloadResource(resourceId, file);
-        }
-    });
-
-    // Инициализация авторизации с ожиданием
-    console.log("Starting authentication check...");
-    try {
-        await new Promise((resolve) => {
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    isAuthenticated = true;
-                    console.log("User authenticated:", user.uid);
-                    resolve();
-                } else {
-                    console.log("Attempting to authenticate...");
-                    signInAnonymously(auth)
-                        .then((userCredential) => {
-                            isAuthenticated = true;
-                            console.log("Authentication succeeded:", userCredential.user.uid);
-                            resolve();
-                        })
-                        .catch(error => console.error("Authentication failed:", error.code, error.message));
-                }
-            });
-        });
-    } catch (error) {
-        console.error("Authentication error:", error);
-    }
-});
-
-function filterResources() {
-    let category = document.getElementById('category-select').value;
-    let age = document.getElementById('age-select').value;
-    let resourceList = document.getElementById('resource-list');
-    resourceList.innerHTML = '';
-
-    resources.forEach(resource => {
-        if ((category === 'all' || resource.category === category) && (age === 'all' || resource.age === age)) {
-            let card = document.createElement('div');
-            card.classList.add('resource-card');
-            card.innerHTML = `
-                <img src="${resource.img}" alt="${resource.title[currentLang]}">
-                <h3>${resource.title[currentLang]}</h3>
-                <p>${resource.desc[currentLang]}</p>
-                <p>Жас: ${resource.age} / Age: ${resource.age}</p>
-                <button data-id="${resource.id}">${currentLang === 'kk' ? 'Қарау' : 'View'}</button>
-                <p>${currentLang === 'kk' ? 'Қаралымдар: ' : 'Views: '}<span id="downloads-${resource.id}">${resource.downloads}</span></p>
-            `;
-            resourceList.appendChild(card);
-        }
-    });
-}
-
-function downloadResource(id, file) {
-    let resource = resources.find(r => r.id === id);
-    if (resource) {
-        resource.downloads++; // Увеличиваем счётчик
-        document.getElementById(`downloads-${id}`).innerText = resource.downloads; // Обновляем отображение
-        // Открываем PDF в новой вкладке
-        window.open(file, '_blank', 'noopener,noreferrer');
-        if (isAuthenticated) {
-            logDownload(id); // Записываем в Firestore
-        } else {
-            console.log("Authentication not completed yet, skipping log...");
-        }
-    }
-}
-
-function logDownload(resourceId) {
-    console.log("Checking user state before log...");
-    auth.onAuthStateChanged(user => {
-        console.log("User state:", user);
-        if (user) {
-            console.log("User found, logging download...");
-            addDoc(collection(db, "downloads"), {
-                userId: user.uid,
-                resourceId: resourceId,
-                timestamp: serverTimestamp() // Исправлено на serverTimestamp
-            }).then(() => console.log("Download logged")).catch(error => console.error("Firestore error:", error));
-        } else {
-            console.log("No user authenticated, please wait...");
-        }
-    });
 }
